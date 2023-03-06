@@ -46,9 +46,12 @@ def frenchToEnglish(frenchText):
             source = 'fr',
             target = 'en'
             ).get_result()
-        return english_translation
+        return english_translation   
     except ApiException as error:
-        return error.message
+        if str(error.message) == "400":
+            return "text is empty"
+        else:
+            error.message
 
 
 

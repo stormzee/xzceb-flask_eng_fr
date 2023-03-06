@@ -11,7 +11,7 @@ class FrenchEnglishTestCase(unittest.TestCase):
     
     def test_null_input(self):
         input_text = ''
-        error_message = translator.englishToFrench(input_text)
+        error_message = translator.frenchToEnglish(input_text)
         self.assertEqual(error_message,
             None
         )
@@ -26,12 +26,14 @@ class FrenchEnglishTestCase(unittest.TestCase):
 
 class EnglishFrenchTestCase(unittest.TestCase):
     
-    # def test_is_null_input(self):
-    #     input_text = ' '
-    #     res = translator.frenchToEnglish(input_text)
-    #     sentence_length = res["character_count"]
-    #     self.assertEqual(sentence_length,0)
-    
+    def test_is_null_input(self):
+        input_text = ''
+        error_message = translator.englishToFrench(input_text)
+        self.assertEqual(error_message,    
+            None
+        )
+
+
     def test_bonjour_to_english(self):
         input_text = 'Bonjour'
         res = translator.frenchToEnglish(input_text)
