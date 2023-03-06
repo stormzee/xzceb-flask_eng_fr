@@ -1,8 +1,11 @@
 import json
-from ibm_watson import LanguageTranslatorV3
-from ibm_cloud_sk_core.authenticators import IAMAuthenticator
+from ibm_watson import LanguageTranslatorV3, ApiException
+from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 import os
+import sys
 from dotenv import load_dotenv
+
+load_dotenv()
 
 apikey  = os.environ['APIKEY']
 url = os.environ['URL']
@@ -15,38 +18,37 @@ language_translator = LanguageTranslatorV3(
     )
 
 language_translator.set_service_url(url)
-language_translator.set_detailed_response(True)
+# language_translator.set_detailed_response(True)
 
 
 # create functions to translate from eng-frn and vice-versa
 
 def englishToFrench(englishText):
-    french_tranlation = language_translator.translate(
+    try:
+        french_translation = language_translator.translate(
         text = englishText,
         source = 'en',
         target = 'fr'
         ).get_result()
-    res = json.dumps(
-        french_translation,
-        indent = 2,
-        ensure_ascii = False
-        )
-    return res
+        return french_translation
+    except ApiException as error:
+        if str(error.message) == "400":
+            return "text is empty"
+        else:
+            error.message
+    
 
 
 def frenchToEnglish(frenchText):
-    eng_tranlation = language_translator.translate(
-        text = frenchText,
-        source = 'fr',
-        target = 'en'
-        ).get_result()
-    res = json.dumps(
-        eng_translation,
-        indent = 2,
-        ensure_ascii = False
-        )
-    return res
-
+    try:
+        english_translation = language_translator.translate(
+            text = frenchText,
+            source = 'fr',
+            target = 'en'
+            ).get_result()
+        return english_translation
+    except ApiException as error:
+        return error.message
 
 
 
